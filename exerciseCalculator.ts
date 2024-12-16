@@ -45,22 +45,22 @@ const calculateExercises = (exerciseHours: number[], target: number): Result => 
 const parseArguments = (args: string[]): { hours: number[]; target: number } => {
     if (args.length < 4) throw new Error('Not enough arguments');
     if (args.length > 15) throw new Error('Too many arguments');
-    const target = Number(args[2])
+    const target = Number(args[2]);
     if (isNaN(target)) {
         throw new Error('Provided value was not a number!');
     }
 
-    let hours: number[] = []
+    const hours: number[] = [];
 
     for (let i = 3; i < args.length; i++) {
         if (isNaN(Number(args[i]))) {
             throw new Error('Provided values were not numbers!');
         }
-        hours.push(Number(args[i]))
+        hours.push(Number(args[i]));
     }
 
-    return { hours, target }
-}
+    return { hours, target };
+};
 
 
 try {
