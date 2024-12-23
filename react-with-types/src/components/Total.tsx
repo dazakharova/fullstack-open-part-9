@@ -4,7 +4,7 @@ interface TotalProps {
 
 const Total = (props: TotalProps) => {
     return (
-        <p>{props.totalExercises}</p>
+        <p>Number of exercises {props.totalExercises}</p>
     )
 };
 
