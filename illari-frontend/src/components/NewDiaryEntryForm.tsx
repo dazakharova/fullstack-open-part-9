@@ -9,7 +9,7 @@ interface NewDiaryEntryFormProps {
 }
 
 const NewDiaryEntryForm = (props: NewDiaryEntryFormProps) => {
-    const [date, setDate] = useState<string>('');
+    const [date, setDate] = useState<string>("2024-12-01");
     const [visibility, setVisibility] = useState<string>('');
     const [weather, setWeather] = useState<string>('');
     const [comment, setComment] = useState<string>('');
@@ -40,30 +40,111 @@ const NewDiaryEntryForm = (props: NewDiaryEntryFormProps) => {
             <h3>Add new entry</h3>
             <form onSubmit={diaryEntryCreation}>
                 <div>
-                    date
+                    date&nbsp;
                     <input
                         id="date"
+                        type="date"
                         value={date}
                         onChange={(event) => setDate(event.target.value)}
                     />
                 </div>
 
                 <div>
-                    visibility
-                    <input
-                        id="visibility"
-                        value={visibility}
-                        onChange={(event) => setVisibility(event.target.value)}
-                    />
+                    visibility&nbsp;
+                    <span>
+                        great
+                        <input
+                            type="radio"
+                            name="visibility"
+                            id="visibility1"
+                            value="great"
+                            onChange={(event) => setVisibility(event.target.value)}
+                        />
+                    </span>
+                    <span>
+                        good
+                        <input
+                            type="radio"
+                            name="visibility"
+                            id="visibility2"
+                            value="good"
+                            onChange={(event) => setVisibility(event.target.value)}
+                        />
+                    </span>
+                    <span>
+                        ok
+                        <input
+                            type="radio"
+                            name="visibility"
+                            id="visibility3"
+                            value="ok"
+                            onChange={(event) => setVisibility(event.target.value)}
+                        />
+                    </span>
+                    <span>
+                        poor
+                        <input
+                            type="radio"
+                            name="visibility"
+                            id="visibility4"
+                            value="poor"
+                            onChange={(event) => setVisibility(event.target.value)}
+                        />
+                    </span>
                 </div>
 
                 <div>
-                    weather
-                    <input
-                        id="weather"
-                        value={weather}
-                        onChange={(event) => setWeather(event.target.value)}
-                    />
+                    weather&nbsp;
+                    <span>
+                        sunny
+                        <input
+                            type="radio"
+                            name="weather"
+                            id="weather1"
+                            value="sunny"
+                            onChange={(event) => setWeather(event.target.value)}
+                        />
+                    </span>
+                    <span>
+                        rainy
+                        <input
+                            type="radio"
+                            name="weather"
+                            id="weather2"
+                            value="rainy"
+                            onChange={(event) => setWeather(event.target.value)}
+                        />
+                    </span>
+                    <span>
+                        cloudy
+                        <input
+                            type="radio"
+                            name="weather"
+                            id="weather3"
+                            value="cloudy"
+                            onChange={(event) => setWeather(event.target.value)}
+                        />
+                    </span>
+                    <span>
+                        stormy
+                        <input
+                            type="radio"
+                            name="weather"
+                            id="weather4"
+                            value="stormy"
+                            onChange={(event) => setWeather(event.target.value)}
+                        />
+                    </span>
+                    <span>
+                        windy
+                        <input
+                            type="radio"
+                            name="weather"
+                            id="weather5"
+                            value="windy"
+                            onChange={(event) => setWeather(event.target.value)}
+                        />
+                    </span>
                 </div>
 
                 <div>
