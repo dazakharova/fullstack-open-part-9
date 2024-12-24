@@ -13,4 +13,12 @@ export const createDiaryEntry = (object: NewDiaryEntry) => {
     return axios
         .post(baseUrl, object)
         .then(response => response.data)
+        .catch(error => {
+            if (axios.isAxiosError(error)) {
+                const message = error.response?.data.error[0]?.message || "An unknown error occurred";
+                throw new Error('Error: ' + message);
+            } else {
+                throw new Error("An error occurred");
+            }
+        })
 }

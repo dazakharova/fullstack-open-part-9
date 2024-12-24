@@ -5,6 +5,7 @@ import { DiaryEntry, NewDiaryEntry } from '../types.ts';
 interface NewDiaryEntryFormProps {
     diaryEntries: DiaryEntry[];
     setDiaryEntries: Dispatch<SetStateAction<DiaryEntry[]>>;
+    setNotification: Dispatch<SetStateAction<string>>;
 }
 
 const NewDiaryEntryForm = (props: NewDiaryEntryFormProps) => {
@@ -22,9 +23,16 @@ const NewDiaryEntryForm = (props: NewDiaryEntryFormProps) => {
 
     const diaryEntryCreation = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        createDiaryEntry(newDiaryEntry as NewDiaryEntry).then((data) => {
-            props.setDiaryEntries(props.diaryEntries.concat(data));
-        });
+        createDiaryEntry(newDiaryEntry as NewDiaryEntry)
+            .then((data: DiaryEntry) => {
+                props.setDiaryEntries([...props.diaryEntries, data]);
+        })
+            .catch((error: Error) => {
+                props.setNotification(error.message);
+                setTimeout(() => {
+                    props.setNotification('');
+                }, 5000);
+            })
     }
 
     return (
