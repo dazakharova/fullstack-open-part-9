@@ -1,4 +1,4 @@
-import DiaryEntry from '../types.ts';
+import { DiaryEntry } from '../types.ts';
 
 interface DiaryEntryProps {
     diaryEntry: DiaryEntry

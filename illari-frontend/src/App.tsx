@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react';
 import Content from './components/Content.tsx';
+import NewDiaryEntryForm from './components/NewDiaryEntryForm.tsx';
 import { getAllDiaryEntries } from './services/diaryService.ts';
-import DiaryEntry from './types.ts';
+import { DiaryEntry } from './types.ts';
 
 const App= () => {
     const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
@@ -12,7 +13,10 @@ const App= () => {
     })
 
   return (
-    <Content diaryEntries={diaryEntries} />
+      <>
+          <NewDiaryEntryForm diaryEntries={diaryEntries} setDiaryEntries={setDiaryEntries} />
+          <Content diaryEntries={diaryEntries} />
+      </>
   )
 }
 

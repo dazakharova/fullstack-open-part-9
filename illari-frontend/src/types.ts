@@ -13,7 +13,7 @@ enum Visibility {
     Poor = 'poor',
 }
 
-interface DiaryEntry {
+export interface DiaryEntry {
     id: number;
     date: string;
     weather: Weather;
@@ -21,4 +21,4 @@ interface DiaryEntry {
     comment?: string;
 }
 
-export default DiaryEntry;
+export type NewDiaryEntry = Omit<DiaryEntry, 'id'>

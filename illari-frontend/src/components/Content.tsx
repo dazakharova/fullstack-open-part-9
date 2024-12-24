@@ -1,5 +1,5 @@
 import EntryComponent from './EntryComponent.tsx';
-import DiaryEntry from '../types.ts';
+import { DiaryEntry } from '../types.ts';
 
 interface ContentProps {
     diaryEntries: DiaryEntry[]
