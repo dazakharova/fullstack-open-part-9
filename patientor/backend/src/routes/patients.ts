@@ -41,6 +41,19 @@ router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatientEnt
     }
 });
 
+router.get('/:id', (req: Request, res: Response<Patient | unknown>) => {
+    try {
+        const foundEntry = patientsService.getEntryById(req.params.id);
+        res.json(foundEntry);
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            res.status(400).send({ error: error.issues });
+        } else {
+            res.status(400).send({ error: 'unknown error' });
+        }
+    }
+});
+
 router.use(errorMiddleware);
 
 export default router;
