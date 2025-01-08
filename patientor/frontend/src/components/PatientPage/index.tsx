@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Patient } from "../../types.ts";
+import Entries from '../Entries/index.tsx';
 import patientService from "../../services/patients.ts";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
@@ -33,6 +34,8 @@ const PatientPage = () => {
             </div>
             {patient.ssn ? (<p>ssn: {patient.ssn}</p>) : null}
             <p>occupation: {patient.occupation}</p>
+            {patient.entries ? <Entries entries={patient.entries} /> : null}
+
         </div>
     )
 }
