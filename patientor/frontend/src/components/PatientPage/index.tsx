@@ -1,12 +1,16 @@
 import { useParams } from "react-router-dom";
-import { Patient } from "../../types.ts";
+import { Patient, Diagnosis } from "../../types.ts";
 import Entries from '../Entries/index.tsx';
 import patientService from "../../services/patients.ts";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import {useEffect, useState} from "react";
 
-const PatientPage = () => {
+interface PatientPageProps {
+    diagnoses: Diagnosis[];
+}
+
+const PatientPage = (props: PatientPageProps) => {
     const [patient, setPatient] = useState<Patient>();
     const id  = useParams().id;
     if (!id) return null;
@@ -34,7 +38,7 @@ const PatientPage = () => {
             </div>
             {patient.ssn ? (<p>ssn: {patient.ssn}</p>) : null}
             <p>occupation: {patient.occupation}</p>
-            {patient.entries ? <Entries entries={patient.entries} /> : null}
+            {patient.entries ? <Entries entries={patient.entries} diagnoses={props.diagnoses} /> : null}
 
         </div>
     )
