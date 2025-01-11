@@ -2,7 +2,6 @@ import { NewPatientEntry, Gender, HealthCheckRating } from './types';
 import { z } from 'zod';
 
 const BaseEntrySchema = z.object({
-    id: z.string(),
     description: z.string(),
     date: z.string().date(),
     specialist: z.string(),
@@ -31,7 +30,13 @@ const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
     }).optional(),
 });
 
-const EntrySchema = z.union([HealthCheckEntrySchema, HospitalEntrySchema, OccupationalHealthcareEntrySchema]);
+export const EntrySchema = z.union([HealthCheckEntrySchema, HospitalEntrySchema, OccupationalHealthcareEntrySchema]);
+
+const FullEntrySchema = z.union([
+    HealthCheckEntrySchema.extend({ id: z.string() }),
+    HospitalEntrySchema.extend({ id: z.string() }),
+    OccupationalHealthcareEntrySchema.extend({ id: z.string() }),
+]);
 
 export const newPatientEntrySchema = z.object({
     name: z.string(),
@@ -39,7 +44,7 @@ export const newPatientEntrySchema = z.object({
     ssn: z.string(),
     gender: z.nativeEnum(Gender),
     occupation: z.string(),
-    entries: z.array(EntrySchema).default([]),
+    entries: z.array(FullEntrySchema).default([]),
 });
 
 const toNewPatientEntry = (object: unknown): NewPatientEntry => {
