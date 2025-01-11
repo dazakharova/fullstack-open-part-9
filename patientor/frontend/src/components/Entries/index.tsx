@@ -1,4 +1,6 @@
 import { Entry, Diagnosis } from '../../types';
+import EntryDetails from "./EntryDetails.tsx";
+import Box from "@mui/material/Box";
 
 interface EntriesProps {
     entries: Entry[];
@@ -11,41 +13,19 @@ const Entries = (props: EntriesProps) => {
         return diagnosis ? `${code} ${diagnosis.name}` : code;
     };
 
-    for (const entry of props.entries) {
-        switch (entry.type) {
-            case 'HealthCheck':
-                return (
-                    <div>
-                        <p>{entry.date} {entry.description}</p>
-                        <ul>
-                            {entry.diagnosisCodes ? entry.diagnosisCodes.map((code, i) => <li key={i}>{code} {findDiagnosisName(code)}</li>) : null}
-                        </ul>
-                        <p>Health Check rating: {entry.healthCheckRating}</p>
-                    </div>
-                )
-            case 'Hospital':
-                return (
-                    <div>
-                        <p>{entry.date} {entry.description}</p>
-                        <ul>
-                            {entry.diagnosisCodes ? entry.diagnosisCodes.map((code, i) => <li key={i}>{code} {findDiagnosisName(code)}</li>) : null}
-                        </ul>
-                        <p>{entry.discharge.date} {entry.discharge.criteria}</p>
-                    </div>
-                )
-            case 'OccupationalHealthcare':
-                return (
-                    <div>
-                        <p>{entry.date} {entry.description}</p>
-                        <ul>
-                            {entry.diagnosisCodes ? entry.diagnosisCodes.map((code, i) => <li key={i}>{code} {findDiagnosisName(code)}</li>) : null}
-                        </ul>
-                        <p>Employer name: {entry.employerName}</p>
-                        {entry.sickLeave ? <p>Sick leave: from {entry.sickLeave.startDate} to {entry.sickLeave.endDate}</p> : null}
-                    </div>
-                )
-        }
-    }
+    return props.entries.map((e: Entry, i: number) => (
+        <Box key={i}
+            sx={{
+                width: '100%',
+                height: 'auto',
+                border: '2px solid #1976d2',
+                borderRadius: '4px',
+                padding: 2,
+            }}
+        >
+            <EntryDetails entry={e} findDiagnosisName={findDiagnosisName} />
+        </Box>
+    ))
 }
 
 export default Entries;
