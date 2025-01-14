@@ -49,7 +49,7 @@ const addEntryForPatient = (id: string, entry: NewEntry): Entry => {
         ...entry,
     };
 
-    modifiedPatient.entries.concat(newEntry);
+    modifiedPatient.entries.push(newEntry);
 
     return newEntry;
 };
