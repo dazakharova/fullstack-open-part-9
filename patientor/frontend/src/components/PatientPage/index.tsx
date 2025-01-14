@@ -5,7 +5,7 @@ import patientService from "../../services/patients.ts";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import {useEffect, useState} from "react";
-import {Button} from "@mui/material";
+import {Button, Grid} from "@mui/material";
 import AddEntryForPatientModal from "../AddEntryForPatientModal";
 import axios from "axios";
 
@@ -18,12 +18,17 @@ const PatientPage = (props: PatientPageProps) => {
     const [entries, setEntries] = useState<Entry[]|[]>([]);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>();
+    const [entryType, setEntryType] = useState<"HealthCheck" | "Hospital" | "Occupational" | null>(null);
 
-    const openModal = (): void => setModalOpen(true);
+    const openModal = (type: "HealthCheck" | "Hospital" | "Occupational"): void => {
+        setEntryType(type);
+        setModalOpen(true);
+    };
 
     const closeModal = (): void => {
         setModalOpen(false);
         setError(undefined);
+        setEntryType(null);
     };
 
     const id  = useParams().id;
@@ -85,10 +90,25 @@ const PatientPage = (props: PatientPageProps) => {
                 onSubmit={submitNewEntry}
                 error={error}
                 onClose={closeModal}
+                entryType={entryType}
             />
-            <Button variant="contained" onClick={() => openModal()}>
-                Add New HealthCheck Enrty
-            </Button>
+            <Grid container spacing={2}>
+                <Grid item>
+                    <Button variant="contained" onClick={() => openModal("HealthCheck")}>
+                        Add Health Check Entry
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button variant="contained" onClick={() => openModal("Hospital")}>
+                        Add Hospital Entry
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button variant="contained" onClick={() => openModal("Occupational")}>
+                        Add Occupational Entry
+                    </Button>
+                </Grid>
+            </Grid>
 
             {entries ? <Entries entries={entries} diagnoses={props.diagnoses} /> : null}
 

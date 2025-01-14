@@ -17,7 +17,7 @@ const OccupationalHealthcareEntryDetails = (props: Props) => {
 
             <ul>
                 {props.entry.diagnosisCodes ? props.entry.diagnosisCodes.map((code, i) => <li
-                    key={i}>{code} {props.findDiagnosisName(code)}</li>) : null}
+                    key={i}>{props.findDiagnosisName(code)}</li>) : null}
             </ul>
 
             {props.entry.sickLeave ?

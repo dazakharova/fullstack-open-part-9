@@ -7,16 +7,32 @@ interface Props {
     onClose: () => void;
     onSubmit: (values: EntryFormValues) => void;
     error?: string;
+    entryType: string | null;
 }
 
-const AddEntryForPatientModal = ({modalOpen, onClose, onSubmit, error}: Props) => {
+const AddEntryForPatientModal = ({modalOpen, onClose, onSubmit, error, entryType}: Props) => {
+    const getTitle = () => {
+        switch (entryType) {
+            case "HealthCheck":
+                return "New Health Check Entry";
+            case "Hospital":
+                return "New Hospital Entry";
+            case "Occupational":
+                return "New Occupational Entry";
+            default:
+                return "";
+        }
+    };
+
     return (
         <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
-            <DialogTitle>New HealthCheck Entry</DialogTitle>
+            <DialogTitle>{getTitle()}</DialogTitle>
             <Divider />
             <DialogContent>
                 {error && <Alert severity="error">{error}</Alert>}
-                <AddEntryForm onSubmit={onSubmit} onCancel={onClose}/>
+                {entryType && (
+                    <AddEntryForm entryType={entryType} onSubmit={onSubmit} onCancel={onClose} />
+                )}
             </DialogContent>
         </Dialog>
     )

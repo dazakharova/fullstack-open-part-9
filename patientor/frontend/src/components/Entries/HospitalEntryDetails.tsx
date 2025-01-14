@@ -15,7 +15,7 @@ const HospitalEntryDetails = (props: Props) => {
 
             <ul>
                 {props.entry.diagnosisCodes ? props.entry.diagnosisCodes.map((code, i) => <li
-                    key={i}>{code} {props.findDiagnosisName(code)}</li>) : null}
+                    key={i}>{props.findDiagnosisName(code)}</li>) : null}
             </ul>
             <p>{props.entry.discharge.date} {props.entry.discharge.criteria}</p>
         </div>
