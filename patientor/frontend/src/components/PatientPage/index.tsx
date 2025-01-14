@@ -91,6 +91,7 @@ const PatientPage = (props: PatientPageProps) => {
                 error={error}
                 onClose={closeModal}
                 entryType={entryType}
+                diagnoses={props.diagnoses}
             />
             <Grid container spacing={2}>
                 <Grid item>

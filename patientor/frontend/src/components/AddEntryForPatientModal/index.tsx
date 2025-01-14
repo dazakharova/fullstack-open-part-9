@@ -1,6 +1,6 @@
 import AddEntryForm from "./AddEntryForm.tsx";
 import {Alert, Dialog, DialogContent, DialogTitle, Divider} from "@mui/material";
-import {EntryFormValues} from "../../types.ts";
+import {EntryFormValues, Diagnosis} from "../../types.ts";
 
 interface Props {
     modalOpen: boolean;
@@ -8,9 +8,10 @@ interface Props {
     onSubmit: (values: EntryFormValues) => void;
     error?: string;
     entryType: string | null;
+    diagnoses: Diagnosis[];
 }
 
-const AddEntryForPatientModal = ({modalOpen, onClose, onSubmit, error, entryType}: Props) => {
+const AddEntryForPatientModal = ({modalOpen, onClose, onSubmit, error, entryType, diagnoses}: Props) => {
     const getTitle = () => {
         switch (entryType) {
             case "HealthCheck":
@@ -31,7 +32,7 @@ const AddEntryForPatientModal = ({modalOpen, onClose, onSubmit, error, entryType
             <DialogContent>
                 {error && <Alert severity="error">{error}</Alert>}
                 {entryType && (
-                    <AddEntryForm entryType={entryType} onSubmit={onSubmit} onCancel={onClose} />
+                    <AddEntryForm entryType={entryType} onSubmit={onSubmit} onCancel={onClose} diagnoses={diagnoses} />
                 )}
             </DialogContent>
         </Dialog>

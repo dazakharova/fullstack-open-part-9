@@ -1,8 +1,18 @@
 import {PropsWithoutEntryType} from "./AddEntryForm";
-import React, {SyntheticEvent, useState} from "react";
-import {Button, Grid, TextField} from "@mui/material";
+import {SyntheticEvent, useState} from "react";
+import {
+    Button,
+    Checkbox,
+    Grid,
+    InputLabel,
+    ListItemText,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField
+} from "@mui/material";
 
-const AddOccupationalEntry = ({ onCancel, onSubmit }: PropsWithoutEntryType) => {
+const AddOccupationalEntry = ({ onCancel, onSubmit, diagnoses }: PropsWithoutEntryType) => {
     const [description, setDescription] = useState<string>("");
     const [date, setDate] = useState<string>("");
     const [specialist, setSpecialist] = useState<string>("");
@@ -11,15 +21,15 @@ const AddOccupationalEntry = ({ onCancel, onSubmit }: PropsWithoutEntryType) => 
     const [sickLeaveStartDate, setSickLeaveStartDate] = useState<string>("");
     const [sickLeaveEndDate, setSickLeaveEndDate] = useState<string>("");
 
-    const onDiagnosisCodesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
+    const onDiagnosisCodesChange = (event: SelectChangeEvent<string[]>) => {
+        const selectedValues = event.target.value as string[];
+        setDiagnosisCodes(selectedValues);
+    };
 
-        if (typeof event.target.value === "string") {
-            const inputCodes = event.target.value;
-            const codes = inputCodes.split("/[\\s,]+/").map((code: string) => code.trim()).filter((code: string) => code !== "");
-            setDiagnosisCodes(codes);
-        }
-    }
+    const diagnosesCodesOptions: { value: string; label: string; }[] = diagnoses.map(v => ({
+        value: v.code,
+        label: v.code
+    }))
 
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
@@ -40,54 +50,86 @@ const AddOccupationalEntry = ({ onCancel, onSubmit }: PropsWithoutEntryType) => 
     return (
         <div>
             <form onSubmit={addEntry}>
-                <TextField
-                    label="Description"
-                    fullWidth
-                    value={description}
-                    onChange={({target}) => setDescription(target.value)}
-                />
-                <TextField
-                    label="Date"
-                    placeholder="YYYY-MM-DD"
-                    fullWidth
-                    value={date}
-                    onChange={({target}) => setDate(target.value)}
-                />
-                <TextField
-                    label="Specialist"
-                    fullWidth
-                    value={specialist}
-                    onChange={({target}) => setSpecialist(target.value)}
-                />
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Description"
+                            fullWidth
+                            value={description}
+                            onChange={({target}) => setDescription(target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Date"
+                            type="date"
+                            InputLabelProps={{ shrink: true }}
+                            fullWidth
+                            value={date}
+                            onChange={({target}) => setDate(target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Specialist"
+                            fullWidth
+                            value={specialist}
+                            onChange={({target}) => setSpecialist(target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputLabel>Diagnosis Codes</InputLabel>
+                        <Select
+                            label="Diagnosis Codes"
+                            fullWidth
+                            multiple
+                            value={diagnosisCodes}
+                            onChange={onDiagnosisCodesChange}
+                            renderValue={(selected) => (selected as string[]).join(", ")}
+                        >
+                            {diagnosesCodesOptions.map((option, i) => (
+                                <MenuItem key={i} value={option.value}>
+                                    <Checkbox checked={diagnosisCodes.includes(option.value)} />
+                                    <ListItemText primary={option.label} />
+                                </MenuItem>
 
-                <TextField
-                    label="Diagnosis codes"
-                    fullWidth
-                    value={diagnosisCodes ? diagnosisCodes.join(", ") : ""}
-                    onChange={onDiagnosisCodesChange}
-                />
-
-                <TextField
-                    label="Employer name"
-                    fullWidth
-                    value={employerName}
-                    onChange={({target}) => setEmployerName(target.value)}
-                />
-
-                <TextField
-                    label="Sick leave start date"
-                    placeholder="YYYY-MM-DD"
-                    fullWidth
-                    value={sickLeaveStartDate}
-                    onChange={({target}) => setSickLeaveStartDate(target.value)}
-                />
-
-                <TextField
-                    label="Sick leave end date"
-                    fullWidth
-                    value={sickLeaveEndDate}
-                    onChange={({target}) => setSickLeaveEndDate(target.value)}
-                />
+                            ))}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Employer name"
+                            fullWidth
+                            value={employerName}
+                            onChange={({target}) => setEmployerName(target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputLabel style={{ marginBottom: 5 }}>Sick Leave</InputLabel>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="Start Date"
+                                    type="date"
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }}
+                                    value={sickLeaveStartDate}
+                                    onChange={({ target }) => setSickLeaveStartDate(target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    label="End Date"
+                                    type="date"
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }}
+                                    value={sickLeaveEndDate}
+                                    onChange={({ target }) => setSickLeaveEndDate(target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
 
                 <Grid>
                     <Grid item>

@@ -1,7 +1,7 @@
 import {PropsWithoutEntryType} from "./AddEntryForm";
-import {Button, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Checkbox, ListItemText, Button, Grid, InputLabel, MenuItem, Select, TextField, SelectChangeEvent} from "@mui/material";
 import {HealthCheckRating} from "../../types.ts";
-import React, {SyntheticEvent, useState} from "react";
+import {SyntheticEvent, useState} from "react";
 
 interface HealthCheckRatingOption{
     value: HealthCheckRating;
@@ -15,22 +15,22 @@ const ratingOptions: HealthCheckRatingOption[] = Object.values(HealthCheckRating
         label: v.toString(),
     }));
 
-const AddHealthCheckEntry = ({ onCancel, onSubmit }: PropsWithoutEntryType) => {
+const AddHealthCheckEntry = ({ onCancel, onSubmit, diagnoses }: PropsWithoutEntryType) => {
     const [description, setDescription] = useState<string>("");
     const [date, setDate] = useState<string>("");
     const [specialist, setSpecialist] = useState<string>("");
     const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(0);
     const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
 
-    const onDiagnosisCodesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
+    const onDiagnosisCodesChange = (event: SelectChangeEvent<string[]>) => {
+        const selectedValues = event.target.value as string[];
+        setDiagnosisCodes(selectedValues);
+    };
 
-        if (typeof event.target.value === "string") {
-            const inputCodes = event.target.value;
-            const codes = inputCodes.split("/[\\s,]+/").map((code: string) => code.trim()).filter((code: string) => code !== "");
-            setDiagnosisCodes(codes);
-        }
-    }
+    const diagnosesCodesOptions: { value: string; label: string; }[] = diagnoses.map(v => ({
+        value: v.code,
+        label: v.code
+    }))
 
     const addEntry = (event: SyntheticEvent) => {
         event.preventDefault();
@@ -47,51 +47,75 @@ const AddHealthCheckEntry = ({ onCancel, onSubmit }: PropsWithoutEntryType) => {
     return (
         <div>
             <form onSubmit={addEntry}>
-                <TextField
-                    label="Description"
-                    fullWidth
-                    value={description}
-                    onChange={({target}) => setDescription(target.value)}
-                />
-                <TextField
-                    label="Date"
-                    placeholder="YYYY-MM-DD"
-                    fullWidth
-                    value={date}
-                    onChange={({target}) => setDate(target.value)}
-                />
-                <TextField
-                    label="Specialist"
-                    fullWidth
-                    value={specialist}
-                    onChange={({target}) => setSpecialist(target.value)}
-                />
-
-                <InputLabel style={{marginTop: 20}}>HealthCheck Rating</InputLabel>
-                <Select
-                    label="HealthCheck Rating"
-                    fullWidth
-                    value={healthCheckRating}
-                    onChange={({target}) => {
-                        setHealthCheckRating(target.value as HealthCheckRating)
-                    }}
-                >
-                    {ratingOptions.map(option =>
-                        <MenuItem
-                            key={option.label}
-                            value={option.value}
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Description"
+                            fullWidth
+                            value={description}
+                            onChange={({target}) => setDescription(target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Date"
+                            type="date"
+                            InputLabelProps={{ shrink: true }}
+                            fullWidth
+                            value={date}
+                            onChange={({target}) => setDate(target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Specialist"
+                            fullWidth
+                            value={specialist}
+                            onChange={({target}) => setSpecialist(target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputLabel>HealthCheck Rating</InputLabel>
+                        <Select
+                            label="HealthCheck Rating"
+                            fullWidth
+                            value={healthCheckRating}
+                            onChange={({target}) => {
+                                setHealthCheckRating(target.value as HealthCheckRating)
+                            }}
                         >
-                            {option.label
-                            }</MenuItem>
-                    )}
-                </Select>
+                            {ratingOptions.map(option =>
+                                <MenuItem
+                                    key={option.label}
+                                    value={option.value}
+                                >
+                                    {option.label
+                                    }</MenuItem>
+                            )}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputLabel>Diagnosis Codes</InputLabel>
+                        <Select
+                            label="Diagnosis Codes"
+                            fullWidth
+                            multiple
+                            value={diagnosisCodes}
+                            onChange={onDiagnosisCodesChange}
+                            renderValue={(selected) => (selected as string[]).join(", ")}
+                        >
+                            {diagnosesCodesOptions.map((option, i) => (
+                                <MenuItem key={i} value={option.value}>
+                                    <Checkbox checked={diagnosisCodes.includes(option.value)} />
+                                    <ListItemText primary={option.label} />
+                                </MenuItem>
 
-                <TextField
-                    label="Diagnosis codes"
-                    fullWidth
-                    value={diagnosisCodes ? diagnosisCodes.join(", ") : ""}
-                    onChange={onDiagnosisCodesChange}
-                />
+                            ))}
+                        </Select>
+                    </Grid>
+                </Grid>
+
+
 
                 <Grid>
                     <Grid item>
